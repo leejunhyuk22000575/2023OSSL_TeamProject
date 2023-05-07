@@ -15,6 +15,7 @@
  - Wiki 관리
  - CRUD 및 파일 기능 구현
  - Collaborator
+ 
 **이준혁**
  - Repo owner
  - 부가 기능 구현

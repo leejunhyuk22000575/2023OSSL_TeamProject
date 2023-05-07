@@ -10,3 +10,12 @@
  * git
  * vscode
  * C언어
+### 팀 소개 및 팀원이 맡은 역할
+**이준환**
+ - Wiki 관리
+ - CRUD 및 파일 기능 구현
+ - Collaborator
+**이준혁**
+ - Repo owner
+ - 부가 기능 구현
+ - 전반적인 코드 관리

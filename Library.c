@@ -16,11 +16,12 @@ int main(){
     int menu;
 
 
-    while (1){
+  while (1){
         menu = selectMenu();
         if (menu == 0) {
-          printf("종료됨!\n");
-          break;}
+            printf("종료됨!\n");
+            break;
+        }
         else if(menu == 1){
             pl[book_num] = (Library *)malloc(sizeof(Library));
             newBook(pl[book_num]);
@@ -29,8 +30,15 @@ int main(){
         else if (menu == 2) {
             wholeBookList(pl, book_num);
         }
+        else if (menu == 3) {
+            updateBook(pl, book_num);
+        }
+        else if (menu == 4) {
+            deleteBook(pl, book_num);
+        }
     }
 }
+
 
 int selectMenu(){
     int menu;
@@ -67,4 +75,39 @@ void wholeBookList(Library *L[], int num){
         printf("%d", a++);
     printf("%s %d %s", L[i]->bookName, L[i]->code, L[i]->genre);
   }
+}
+void updateBook(Library *L[], int num){
+    int code_to_update;
+    printf("수정하고 싶은 책의 고유번호를 입력하세요: ");
+    scanf("%d", &code_to_update);
+
+    for(int i=0; i<num; i++){
+        if(L[i]->code == code_to_update){
+            printf("\n***************************************\n");
+            printf("수정하실 책의 정보를 입력해주세요\n");
+            printf("책의 이름은?");
+            scanf("%s", L[i]->bookName);
+            printf("책의 고유번호은?");
+            scanf("%d", &L[i]->code);
+            printf("책의 장르는?");
+            scanf("%s", L[i]->genre);
+            printf("책의 정보가 수정되었습니다.\n");
+            break;
+        }
+    }
+}
+
+void deleteBook(Library *L[], int num){
+    int code_to_delete;
+    printf("삭제하고 싶은 책의 고유번호를 입력하세요: ");
+    scanf("%d", &code_to_delete);
+
+    for(int i=0; i<num; i++){
+        if(L[i]->code == code_to_delete){
+            free(L[i]);
+            L[i] = NULL;
+            printf("책이 삭제되었습니다.\n");
+            break;
+        }
+    }
 }

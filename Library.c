@@ -4,16 +4,22 @@
 typedef struct{
 char bookName[20];
 int code;           //도서관에 저장된 책의 고유번호
-char genre;
+char genre[20];
+char borrowStatus[10];
 }Library;
 
 int selectMenu();
-void newBook(Library* L){};
+void newBook(Library* L, int codeNum);
 void wholeBookList(Library *L[], int num);
+void updateBook(Library *L[], int num);
+void deleteBook(Library *L[], int num);
+void borrowBook(Library *L[], int num);
+void returnBook(Library *L[], int num);
 int main(){
     Library *pl[100];
     int book_num = 0;
     int menu;
+    int code = 1;
 
 
   while (1){
@@ -24,8 +30,9 @@ int main(){
         }
         else if(menu == 1){
             pl[book_num] = (Library *)malloc(sizeof(Library));
-            newBook(pl[book_num]);
+            newBook(pl[book_num], code);
             book_num++;
+            code++;
         }
         else if (menu == 2) {
             wholeBookList(pl, book_num);
@@ -35,6 +42,12 @@ int main(){
         }
         else if (menu == 4) {
             deleteBook(pl, book_num);
+        }
+        else if (menu == 5) {
+            borrowBook(pl, book_num);
+        }
+        else if (menu == 6) {
+            returnBook(pl, book_num);
         }
     }
 }
@@ -57,23 +70,25 @@ int selectMenu(){
     scanf("%d", &menu);
     return menu;
 }
-void newBook(Library* L){
+void newBook(Library* L, int codeNum){
+    char status[20] = "대여가능";
     printf("\n***************************************\n");
     printf("도서관에 새로 추가하실 책의 정보를 입력해주세요\n");
-    printf("책의 이름은?");
+    printf("책의 이름은? : ");
     scanf("%s", L->bookName);
-    printf("책의 고유번호은?");
-    scanf("%d", &L->code);
-    printf("책의 장르는?");
+    printf("책의 장르는?(역사, 문학, 자연과학, 경제, 종교, 사회과학, 철학, 언어, 예술, 교육) : ");
     scanf("%s", L->genre);
+    L->code = codeNum;
+    strcpy(L->borrowStatus, status);
 }
 void wholeBookList(Library *L[], int num){
   int a = 1;
-    printf("********** 책 리스트 ***********\n");
+    printf("\n----------------------------------\n");  
+    printf("고유코드  책 이름(장르 : / 대여가능여부)\n");
+    printf("----------------------------------\n");
   for(int i=0; i<num; i++){
     if(L[i]->code=='\0') continue;
-        printf("%d", a++);
-    printf("%s %d %s", L[i]->bookName, L[i]->code, L[i]->genre);
+    printf("   %d      %s(장르 : %s / %s)\n", L[i]->code, L[i]->bookName, L[i]->genre, L[i]->borrowStatus);
   }
 }
 void updateBook(Library *L[], int num){
@@ -85,11 +100,9 @@ void updateBook(Library *L[], int num){
         if(L[i]->code == code_to_update){
             printf("\n**************************************\n");
             printf("수정하실 책의 정보를 입력해주세요\n");
-            printf("책의 이름은?");
+            printf("책의 이름은? : ");
             scanf("%s", L[i]->bookName);
-            printf("책의 고유번호은?");
-            scanf("%d", &L[i]->code);
-            printf("책의 장르는?");
+            printf("책의 장르는?(역사, 문학, 자연과학, 경제, 종교, 사회과학, 철학, 언어, 예술, 교육) : ");
             scanf("%s", L[i]->genre);
             printf("책의 정보가 수정되었습니다.\n");
             break;
@@ -109,5 +122,45 @@ void deleteBook(Library *L[], int num){
             printf("책이 삭제되었습니다.\n");
             break;
         }
+    }
+}
+void borrowBook(Library *L[], int num){
+    int borrowBookCode;
+    char status[20] = "대여불가능";
+    wholeBookList(L, num);
+    while(1){
+    printf("\n빌리고 싶은 책의 고유번호를 입력하세요: ");
+    scanf("%d", &borrowBookCode);
+    for(int i=0; i<num; i++){
+        if(strcmp(L[i]->borrowStatus, "대여가능")==0){
+        if(L[i]->code==borrowBookCode) {
+            strcpy(L[i]->borrowStatus, status);
+            printf("\n대여 완료되었습니다.\n");
+            return;
+        }
+        }
+    }
+    printf("\n이미 대여된 책입니다. 다른 책을 골라주세요.\n");
+    wholeBookList(L, num);
+    }
+}
+void returnBook(Library *L[], int num){
+    int returnBookCode;
+    char status[20] = "대여가능";
+    wholeBookList(L, num);
+    while(1){
+    printf("\n반납할 책의 고유번호를 입력하세요: ");
+    scanf("%d", &returnBookCode);
+    for(int i=0; i<num; i++){
+        if(strcmp(L[i]->borrowStatus, "대여불가능")==0){
+        if(L[i]->code==returnBookCode){
+            strcpy(L[i]->borrowStatus, status);
+            printf("\n반납 완료되었습니다.\n");
+            return;
+        }
+        }
+    }
+    printf("\n이미 반납되어진 책입니다. 다시 골라주세요.\n");
+    wholeBookList(L, num);
     }
 }

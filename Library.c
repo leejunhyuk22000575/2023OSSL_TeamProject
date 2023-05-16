@@ -110,20 +110,35 @@ void updateBook(Library *L[], int num){
     }
 }
 
-void deleteBook(Library *L[], int num){
+void deleteBook(Library *L[], int num) {
     int code_to_delete;
     printf("삭제하고 싶은 책의 고유번호를 입력하세요: ");
     scanf("%d", &code_to_delete);
 
-    for(int i=0; i<num; i++){
-        if(L[i]->code == code_to_delete){
-            free(L[i]);
-            L[i] = NULL;
-            printf("책이 삭제되었습니다.\n");
+    int index = -1; // 삭제할 책의 인덱스
+
+    for (int i = 0; i < num; i++) {
+        if (L[i]->code == code_to_delete) {
+            index = i;
             break;
         }
     }
+
+    if (index != -1) {
+        free(L[index]);
+        L[index] = NULL;
+
+        // 배열 재정렬
+        for (int i = index; i < num - 1; i++) {
+            L[i] = L[i + 1];
+        }
+
+        printf("책이 삭제되었습니다.\n");
+    } else {
+        printf("해당 고유번호를 가진 책을 찾을 수 없습니다.\n");
+    }
 }
+
 void borrowBook(Library *L[], int num){
     int borrowBookCode;
     char status[20] = "대여불가능";

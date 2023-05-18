@@ -115,7 +115,7 @@ void updateBook(Library *L[], int num){
 
     for(int i=0; i<num; i++){
         if(L[i]->code == code_to_update){
-            printf("\n**************************************\n");
+            printf("\n***************************************\n");
             printf("수정하실 책의 정보를 입력해주세요\n");
             printf("책의 이름은? : ");
             scanf("%s", L[i]->bookName);

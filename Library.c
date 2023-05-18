@@ -15,7 +15,7 @@ void updateBook(Library *L[], int num);
 void deleteBook(Library *L[], int num);
 void borrowBook(Library *L[], int num);
 void returnBook(Library *L[], int num);
-
+void applyBook(Library *apply, int applyCodeNum);
 int main(){
     Library *pl[100];
     Library *apply[100];
@@ -191,4 +191,13 @@ void returnBook(Library *L[], int num){
     printf("\n이미 반납되어진 책입니다. 다시 골라주세요.\n");
     wholeBookList(L, num);
     }
+    
+}
+void applyBook(Library *apply, int applyCodeNum){
+    printf("\n푸른 초장 도서관에 새로 들어왔으면 하는 책을 신청해주세요.\n");
+    printf("\n신청하는 책의 이름은? : ");
+    scanf("%s", apply->bookName);
+    printf("\n책의 장르는?(역사, 문학, 자연과학, 경제, 종교, 사회과학, 철학, 언어, 예술, 교육) : ");
+    scanf("%s", apply->genre);
+    apply->code = applyCodeNum;
 }

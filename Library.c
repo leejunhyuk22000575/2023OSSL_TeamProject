@@ -15,10 +15,7 @@ void updateBook(Library *L[], int num);
 void deleteBook(Library *L[], int num);
 void borrowBook(Library *L[], int num);
 void returnBook(Library *L[], int num);
-void applyBook(Library *apply, int applyCodeNum);
-void applyList(Library *apply[], int num);
-void searchBook(Library *L[], int num);
-void showSearchBook(Library L);
+
 int main(){
     Library *pl[100];
     Library *apply[100];
@@ -194,41 +191,4 @@ void returnBook(Library *L[], int num){
     printf("\n이미 반납되어진 책입니다. 다시 골라주세요.\n");
     wholeBookList(L, num);
     }
-}
-void applyBook(Library *apply, int applyCodeNum){
-    printf("\n푸른 초장 도서관에 새로 들어왔으면 하는 책을 신청해주세요.\n");
-    printf("\n신청하는 책의 이름은? : ");
-    scanf("%s", apply->bookName);
-    printf("\n책의 장르는?(역사, 문학, 자연과학, 경제, 종교, 사회과학, 철학, 언어, 예술, 교육) : ");
-    scanf("%s", apply->genre);
-    apply->code = applyCodeNum;
-}
-void applyList(Library *apply[], int num){
-    printf("\n----------------------------------\n");  
-    printf("         신청 리스트 현황\n");
-    printf("----------------------------------\n");
-    for(int i=0; i<num; i++){
-    printf("   %d      %s(장르 : %s)\n", apply[i]->code, apply[i]->bookName , apply[i]->genre);
-  }
-}
-void searchBook(Library *L[], int num){
-  int scnt=0;
-  char search[20];
-  printf("검색할 책의 이름은? ");
-  scanf("%s", search);
-
-  printf("==================================\n");
-  for(int i=0; i<num; i++){
-    if(L[i]->code=='\0') continue;
-    if(strstr(L[i]->bookName, search)){
-      printf("%2d ", i+1);
-      showSearchBook(*L[i]);
-      scnt++;
-    }
-  }
-  if(scnt==0) printf("=> 찾으시는 책이 없습니다!");
-  printf("\n");
-}
-void showSearchBook(Library L){
-  printf("          %d %s %s\n", L.code, L.bookName, L.genre);
 }

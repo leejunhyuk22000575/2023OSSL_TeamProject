@@ -15,11 +15,18 @@ void updateBook(Library *L[], int num);
 void deleteBook(Library *L[], int num);
 void borrowBook(Library *L[], int num);
 void returnBook(Library *L[], int num);
+void applyBook(Library *apply, int applyCodeNum);
+void applyList(Library *apply[], int num);
+void searchBook(Library *L[], int num);
+void showSearchBook(Library L);
 int main(){
     Library *pl[100];
+    Library *apply[100];
+    int apply_book_num = 0;
     int book_num = 0;
     int menu;
     int code = 1;
+    int applyCode = 1;
 
 
   while (1){
@@ -49,6 +56,15 @@ int main(){
         else if (menu == 6) {
             returnBook(pl, book_num);
         }
+        else if(menu == 7){
+            apply[apply_book_num] = (Library *)malloc(sizeof(Library));
+            applyBook(apply[apply_book_num], applyCode);
+            apply_book_num++;
+            applyCode++;
+        }
+        else if (menu == 8) {
+            applyList(apply, apply_book_num);
+        }
     }
 }
 
@@ -63,8 +79,9 @@ int selectMenu(){
     printf("5. 책 대여 \n");
     printf("6. 책 반납 \n");
     printf("7. 원하는 책 신청 \n");
-    printf("8. 책 검색 \n");
-    printf("9. 장르별 책 조회 \n");
+    printf("8. 책 신청 리스트 조회\n");
+    printf("9. 책 검색 \n");
+    printf("10. 장르별 책 조회 \n");
     printf("0. 종료 \n");
     printf("\n => 원하시는 메뉴가 무엇인가요? ");
     scanf("%d", &menu);
@@ -82,11 +99,11 @@ void newBook(Library* L, int codeNum){
     strcpy(L->borrowStatus, status);
 }
 void wholeBookList(Library *L[], int num){
-  int a = 1;
+    int a = 1;
     printf("\n----------------------------------\n");  
     printf("고유코드  책 이름(장르 : / 대여가능여부)\n");
     printf("----------------------------------\n");
-  for(int i=0; i<num; i++){
+    for(int i=0; i<num; i++){
     if(L[i]->code=='\0') continue;
     printf("   %d      %s(장르 : %s / %s)\n", L[i]->code, L[i]->bookName, L[i]->genre, L[i]->borrowStatus);
   }
@@ -138,7 +155,6 @@ void deleteBook(Library *L[], int num) {
         printf("해당 고유번호를 가진 책을 찾을 수 없습니다.\n");
     }
 }
-
 void borrowBook(Library *L[], int num){
     int borrowBookCode;
     char status[20] = "대여불가능";
@@ -178,4 +194,41 @@ void returnBook(Library *L[], int num){
     printf("\n이미 반납되어진 책입니다. 다시 골라주세요.\n");
     wholeBookList(L, num);
     }
+}
+void applyBook(Library *apply, int applyCodeNum){
+    printf("\n푸른 초장 도서관에 새로 들어왔으면 하는 책을 신청해주세요.\n");
+    printf("\n신청하는 책의 이름은? : ");
+    scanf("%s", apply->bookName);
+    printf("\n책의 장르는?(역사, 문학, 자연과학, 경제, 종교, 사회과학, 철학, 언어, 예술, 교육) : ");
+    scanf("%s", apply->genre);
+    apply->code = applyCodeNum;
+}
+void applyList(Library *apply[], int num){
+    printf("\n----------------------------------\n");  
+    printf("         신청 리스트 현황\n");
+    printf("----------------------------------\n");
+    for(int i=0; i<num; i++){
+    printf("   %d      %s(장르 : %s)\n", apply[i]->code, apply[i]->bookName , apply[i]->genre);
+  }
+}
+void searchBook(Library *L[], int num){
+  int scnt=0;
+  char search[20];
+  printf("검색할 책의 이름은? ");
+  scanf("%s", search);
+
+  printf("==================================\n");
+  for(int i=0; i<num; i++){
+    if(L[i]->code=='\0') continue;
+    if(strstr(L[i]->bookName, search)){
+      printf("%2d ", i+1);
+      showSearchBook(*L[i]);
+      scnt++;
+    }
+  }
+  if(scnt==0) printf("=> 찾으시는 책이 없습니다!");
+  printf("\n");
+}
+void showSearchBook(Library L){
+  printf("          %d %s %s\n", L.code, L.bookName, L.genre);
 }

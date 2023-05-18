@@ -217,7 +217,7 @@ void searchBook(Library *L[], int num){
   printf("검색할 책의 이름은? ");
   scanf("%s", search);
 
-  printf("==================================\n");
+  printf("===================================\n");
   for(int i=0; i<num; i++){
     if(L[i]->code=='\0') continue;
     if(strstr(L[i]->bookName, search)){

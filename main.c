@@ -16,7 +16,7 @@ int main(){
   while (1){
         menu = selectMenu();
         if (menu == 0) {
-            printf("醫낅즺�맖!\n");
+            printf("종료됨!\n");
             break;
         }
         else if(menu == 1){

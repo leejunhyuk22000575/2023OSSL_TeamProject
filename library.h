@@ -21,4 +21,7 @@ void searchBook(Library *L[], int num);
 void showSearchBook(Library L);
 void listBookGenre(Library *L[], int num);
 void listGenre(Library L);
-
+void saveBookList(Library *L[], int num);
+void saveApplyBookList(Library *L[], int num);
+int loadBookList(Library *L[]);
+int loadApplyBookList(Library *L[]);

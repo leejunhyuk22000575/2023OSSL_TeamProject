@@ -2,9 +2,9 @@
 #include <string.h>
 #include <stdlib.h>
 typedef struct{
-char bookName[20];
+char bookName[100];
 int code;           //도서관에 저장된 책의 고유번호
-char genre[20];
+char genre[100];
 char borrowStatus[10];
 }Library;
 

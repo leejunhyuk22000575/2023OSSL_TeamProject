@@ -53,5 +53,9 @@ int main(){
         else if(menu == 10) {
             listBookGenre(pl, book_num);
         }
+        else if(menu = 11){
+            saveBookList(pl, book_num);
+            saveApplyBookList(apply, apply_book_num);
+        }
     }
 }

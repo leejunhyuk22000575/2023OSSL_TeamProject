@@ -10,7 +10,8 @@ int main(){
     int book_num = 0;
     int menu;
     
-
+    book_num = loadBookList(pl);
+    apply_book_num = loadApplyBookList(apply);
 
   while (1){
         menu = selectMenu();

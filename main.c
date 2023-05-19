@@ -16,7 +16,7 @@ int main(){
   while (1){
         menu = selectMenu();
         if (menu == 0) {
-            printf("종료됨!\n");
+            printf("醫낅즺�맖!\n");
             break;
         }
         else if(menu == 1){
@@ -58,5 +58,7 @@ int main(){
             saveBookList(pl, book_num);
             saveApplyBookList(apply, apply_book_num);
         }
-    }
+  }
+    return 0;
+
 }

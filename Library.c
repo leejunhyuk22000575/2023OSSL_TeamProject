@@ -1,14 +1,12 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-typedef struct {
-    char bookName[20];
-    int code;
-    char genre[20];
-    char borrowStatus[10];
-    int borrowCount; 
-} Library;
-
+typedef struct{
+char bookName[20];
+int code;           //도서관에 저장된 책의 고유번호
+char genre[20];
+char borrowStatus[10];
+}Library;
 
 int selectMenu();
 void newBook(Library* L, int codeNum);
@@ -21,6 +19,9 @@ void applyBook(Library *apply, int applyCodeNum);
 void applyList(Library *apply[], int num);
 void searchBook(Library *L[], int num);
 void showSearchBook(Library L);
+void listBookGenre(Library *L[], int num);
+void listGenre(Library L);
+
 int main(){
     Library *pl[100];
     Library *apply[100];
@@ -28,8 +29,7 @@ int main(){
     int book_num = 0;
     int menu;
     
-    book_num = loadBookList(pl);
-    apply_book_num = loadApplyBookList(apply);
+   
 
 
   while (1){
@@ -70,6 +70,10 @@ int main(){
         else if(menu == 9) {
             searchBook(pl, book_num);
         }
+        else if(menu == 10) {
+            listBookGenre(pl, book_num);
+        }
+        }
     }
 }
 
@@ -108,12 +112,12 @@ void newBook(Library* L, int codeNum){
 void wholeBookList(Library *L[], int num){
     int a = 1;
     printf("\n----------------------------------\n");  
-    printf("고유코드  책 이름(장르 : / 대여가능여부 / 대출 횟수)\n"); // 헤더 변경
+    printf("고유코드  책 이름(장르 : / 대여가능여부)\n");
     printf("----------------------------------\n");
     for(int i=0; i<num; i++){
-        if(L[i]->code=='\0') continue;
-        printf("   %d      %s(장르 : %s / %s / %d회)\n", L[i]->code, L[i]->bookName, L[i]->genre, L[i]->borrowStatus, L[i]->borrowCount); // 대출 횟수 출력 추가
-    }
+    if(L[i]->code=='\0') continue;
+    printf("   %d      %s(장르 : %s / %s)\n", L[i]->code, L[i]->bookName, L[i]->genre, L[i]->borrowStatus);
+  }
 }
 void updateBook(Library *L[], int num){
     int code_to_update;
@@ -133,7 +137,6 @@ void updateBook(Library *L[], int num){
         }
     }
 }
-
 void deleteBook(Library *L[], int num) {
     int code_to_delete;
     printf("삭제하고 싶은 책의 고유번호를 입력하세요: ");
@@ -167,23 +170,21 @@ void borrowBook(Library *L[], int num){
     char status[20] = "대여불가능";
     wholeBookList(L, num);
     while(1){
-        printf("\n빌리고 싶은 책의 고유번호를 입력하세요: ");
-        scanf("%d", &borrowBookCode);
-        for(int i=0; i<num; i++){
-            if(strcmp(L[i]->borrowStatus, "대여가능")==0){
-                if(L[i]->code==borrowBookCode) {
-                    strcpy(L[i]->borrowStatus, status);
-                    L[i]->borrowCount++; // 대출 횟수 증가
-                    printf("\n대여 완료되었습니다.\n");
-                    return;
-                }
-            }
+    printf("\n빌리고 싶은 책의 고유번호를 입력하세요: ");
+    scanf("%d", &borrowBookCode);
+    for(int i=0; i<num; i++){
+        if(strcmp(L[i]->borrowStatus, "대여가능")==0){
+        if(L[i]->code==borrowBookCode) {
+            strcpy(L[i]->borrowStatus, status);
+            printf("\n대여 완료되었습니다.\n");
+            return;
         }
-        printf("\n이미 대여된 책입니다. 다른 책을 골라주세요.\n");
-        wholeBookList(L, num);
+        }
+    }
+    printf("\n이미 대여된 책입니다. 다른 책을 골라주세요.\n");
+    wholeBookList(L, num);
     }
 }
-
 void returnBook(Library *L[], int num){
     int returnBookCode;
     char status[20] = "대여가능";
@@ -240,4 +241,24 @@ void searchBook(Library *L[], int num){
 }
 void showSearchBook(Library L){
   printf("\n%s(%s)의 고유코드는 %d입니다.\n", L.bookName, L.genre, L.code);
+}
+void listBookGenre(Library *L[], int num){
+    int breakPoint=0;
+    char searchGenre[20];
+    printf("조회하고 싶은 책의 장르가 무엇입니까? ");
+    scanf("%s", searchGenre);
+
+    printf("\n*******%s서적 리스트*******\n");
+    for(int i=0; i<num; i++){
+    if(L[i]->code=='\0') continue;
+    if(strstr(L[i]->genre, searchGenre)){
+      listGenre(*L[i]);
+      breakPoint++;
+    }
+  }
+  if(breakPoint==0) printf("=> \n찾으시는 책이 없습니다!");
+  printf("\n");
+}
+void listGenre(Library L){
+  printf("%d   %s\n", L.code, L.bookName);
 }

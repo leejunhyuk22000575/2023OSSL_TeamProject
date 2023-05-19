@@ -175,3 +175,54 @@ void listBookGenre(Library *L[], int num){
 void listGenre(Library L){
   printf("%d   %s\n", L.code, L.bookName);
 }
+void saveBookList(Library *L[], int num){
+    FILE* fp = fopen("bookList.txt", "w");
+    for(int i=0; i<num; i++){
+    if(L[i]->code=='\0') continue;
+      fprintf(fp, "%d %s %s %s\n", L[i]->code, L[i]->bookName, L[i]->genre, L[i]->borrowStatus);
+    }
+    fclose(fp);
+}
+void saveApplyBookList(Library *L[], int num){
+    FILE* fp = fopen("applyBookList.txt", "w");
+    for(int i=0; i<num; i++){
+    if(L[i]->code=='\0') continue;
+      fprintf(fp, "%d %s %s\n", L[i]->code, L[i]->bookName, L[i]->genre);
+    }
+    fclose(fp);
+    printf("=> 저장완료!\n");
+}
+int loadBookList(Library *L[]){
+    int count = 0;
+    FILE* fp = fopen("bookList.txt", "r");
+    
+    while (!feof(fp)) {
+        L[count] = (Library*)malloc(sizeof(Library));
+        fscanf(fp, "%d %s %s %s\n", &L[count]->code, L[count]->bookName, L[count]->genre, L[count]->borrowStatus);
+        count++;
+      if(count>=100) break;
+    }
+  
+    fclose(fp);
+    if(L[0]->code==1) {
+        return count;
+    }
+    else return 0;
+}
+int loadApplyBookList(Library *L[]){
+    int count = 0;
+    FILE* fp = fopen("applyBookList.txt", "r");
+    
+    while (!feof(fp)) {
+        L[count] = (Library*)malloc(sizeof(Library));
+        fscanf(fp, "%d %s %s\n", &L[count]->code, L[count]->bookName, L[count]->genre);
+        count++;
+      if(count>=100) break;
+    }
+  
+    fclose(fp);
+    if(L[0]->code==1) {
+        return count;
+    }
+    else return 0;
+}

@@ -161,7 +161,7 @@ void listBookGenre(Library *L[], int num){
     printf("조회하고 싶은 책의 장르가 무엇입니까? ");
     scanf("%s", searchGenre);
 
-    printf("\n*******%s서적 리스트*******\n");
+    printf("\n*******%s서적 리스트*******\n", searchGenre);
     for(int i=0; i<num; i++){
     if(L[i]->code=='\0') continue;
     if(strstr(L[i]->genre, searchGenre)){
